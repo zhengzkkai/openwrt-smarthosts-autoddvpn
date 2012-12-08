@@ -1,0 +1,18 @@
+#!/bin/sh
+
+### for smarthosts project
+cd /mnt/etc/smarthosts
+/opt/usr/bin/svn up
+
+###  for autoddvpn project
+
+# update svn
+cd /mnt/etc/autoddvpn
+/opt/usr/bin/svn up
+
+# generate route
+cd grace.d
+/bin/grep "^route add" vpnup.sh |  /bin/sed "s/ gw / dev /g" | /bin/sed "s/VPNGW/1/g" > /mnt/etc/autoddvpn/gen_route.sh
+
+/etc/init.d/dnsmasq restart
+
